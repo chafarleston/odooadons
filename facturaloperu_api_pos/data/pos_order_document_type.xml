@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="0">
+
+  <!-- Tipos de documentos -->
+  <record id="document_type_factura" model="pos.order.document.type">
+    <field name="name">Factura</field>
+    <field name="number">01</field>
+  </record>
+  <record id="document_type_boleta" model="pos.order.document.type">
+    <field name="name">Boleta</field>
+    <field name="number">03</field>
+  </record>
+  <!-- <record id="document_type_nota_credito" model="pos.order.document.type">
+    <field name="name">Nota de crédito</field>
+    <field name="number">07</field>
+  </record>
+  <record id="document_type_nota_debito" model="pos.order.document.type">
+    <field name="name">Nota de débito</field>
+    <field name="number">08</field>
+  </record> -->
+
+  <!-- Facturas -->
+  <record id="serial_number_factura_f001" model="pos.order.serial.number">
+    <field name="name">F001</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_factura"/>
+  </record>
+  <record id="serial_number_factura_f002" model="pos.order.serial.number">
+    <field name="name">F002</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_factura"/>
+  </record>
+
+  <!-- Boletas -->
+  <record id="serial_number_boleta_b006" model="pos.order.serial.number">
+    <field name="name">B001</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_boleta"/>
+  </record>
+  <record id="serial_number_boleta_b111" model="pos.order.serial.number">
+    <field name="name">B002</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_boleta"/>
+  </record>
+
+  <!-- Notas de crédito -->
+  <!-- <record id="serial_number_nota_credito_nc001" model="pos.order.serial.number">
+    <field name="name">NC001</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_nota_credito"/>
+  </record>
+  <record id="serial_number_nota_credito_nc002" model="pos.order.serial.number">
+    <field name="name">NC002</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_nota_credito"/>
+  </record> -->
+
+  <!-- Notas de débito -->
+  <!-- <record id="serial_number_nota_debito_nd001" model="pos.order.serial.number">
+    <field name="name">ND001</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_nota_debito"/>
+  </record>
+  <record id="serial_number_nota_debito_nd002" model="pos.order.serial.number">
+    <field name="name">ND002</field>
+    <field name="document_type_id" ref="facturaloperu_api_pos.document_type_nota_debito"/>
+  </record> -->
+</odoo>
+

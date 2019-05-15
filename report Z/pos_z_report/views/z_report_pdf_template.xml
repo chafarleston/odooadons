@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="front_sales_report_pdf_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                   <div class="oe_structure"/>
+                    <div align="center" style="border:1px solid black;margin:0 auto;padding:0 auto;font-size:25px">
+                        <strong>Z - Report</strong>
+                    </div>
+                    <div align="center" style="margin:0 auto;padding:0 auto;font-size:20px;margin-top:8px;">
+                        <t t-if="o.get_company_data().logo">
+                          <img src="/logo.png?company=${company.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${company.name}"/></t>
+                        <t t-if="o.get_company_data().report_header">
+                            <span><t t-esc="o.get_company_data().report_header" /></span><br />
+                        </t>
+                        <div style="font-size:13px;">
+                            <t t-if="o.get_company_data().name">
+                                <t t-esc="o.get_company_data().name" /><br />
+                            </t>
+                            <t t-if="o.get_company_data().street">
+                                <t t-esc="o.get_company_data().street" /><br />
+                            </t>
+                            <t t-if="o.get_company_data().street2">
+                                <t t-esc="o.get_company_data().street2" />
+                            </t>
+                            <t t-if="o.get_company_data().city">
+                                <t t-esc="o.get_company_data().city" />
+                            </t>
+                            <t t-if="o.get_company_data().state_id.name">
+                                <t t-esc="o.get_company_data().state_id.name" />
+                            </t>
+                            <t t-if="o.get_company_data().country_id.name">
+                                <t t-esc="o.get_company_data().country_id.name" />
+                            </t><br />
+                            <t t-if="o.get_company_data().phone">
+                                Tel: <t t-esc="o.get_company_data().phone" /><br />
+                            </t>
+                            <t t-if="o.get_company_data().email">
+                                Email: <t t-esc="o.get_company_data().email" /><br />
+                            </t>
+                            <t t-if="o.get_company_data().website">
+                                Website: <t t-esc="o.get_company_data().website" /><br />
+                            </t>
+                        </div>
+                    </div>
+                    
+                    <table style="width:100%;margin-top:15px;">
+                    	<tr>
+                            <td class="text-left">
+                                Opened Date
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="o.start_at"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                               Close Date
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="o.stop_at"/>
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                 
+                  
+				<table style="width:100%;margin-top:15px;">
+                        <tr>
+                            <td class="text-left">
+                            	--------------------------------<br/>
+                                Opening Amount<br/>
+                            	--------------------------------<br/>
+                            </td>
+                            <td class="text-right">
+                            	------------------------<br/>
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.cash_register_balance_start"/><br/>
+                                ------------------------<br/>
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="text-left">
+                                Sales
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.get_total_sales()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                Returns
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.get_total_returns()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                Tax
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="o.get_total_tax()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                Discount Amount
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.get_total_discount()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                Gross Total
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.get_total_first()"/>
+                            </td>
+                        </tr>
+                        <t t-if="o.get_user()">
+                            <tr>
+                                <td class="text-left">
+                                    Gross Profit
+                                </td>
+                                <td class="text-right">
+                               <span t-esc="o.get_gross_total()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">
+                                    Net Gross Profit
+                                </td>
+                                <td class="text-right">
+                               <span t-esc="o.get_net_gross_total()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </t>
+                         <tr>
+                            <td class="text-left">
+                                --------------------------------<br/>
+                                Closing Amount<br/>
+                                --------------------------------<br/>
+                            	
+                            </td>
+                            <td class="text-right">
+                            	------------------------<br/>
+                                <span t-field="o.currency_id.symbol"/><span t-esc="o.cash_register_balance_end_real"/><br/>
+                                ------------------------<br/>
+                            </td>
+                        </tr>
+                    </table>
+                    <t t-if="o.get_product_category()">
+                        <div align="center" style="margin-top:10px !important;">
+                            ----------------------------<br/>
+                            Department Sales<br/>
+                            ----------------------------<br/>
+                        </div>
+                        <table style="width:100%;margin-top:15px;">
+                            <tr t-foreach="o.get_product_category()" t-as="l">
+                                <td class="text-left">
+                                    <span t-esc="o.get_product_name(l.get('pos_categ_id'))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.currency_id.symbol"/><span t-esc="l.get('price')"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;">
+                            <tr>
+                                <td style="width:50%;">
+                                </td>
+                                <td style="width:50%; !important" class="text-right">
+                                    -----------------------
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:50%;" class="text-left">
+                                    Total
+                                </td>
+                                <td style="width:50%; !important" class="text-right">
+                                    <span t-field="o.currency_id.symbol"/><span t-esc="o.get_product_cate_total()"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </t>
+                    <table style="width:100%;margin-top:15px;">
+                        <t t-set="total" t-value="0"/>
+                        <tr t-foreach="o.get_payments()" t-as="l">
+                            <td class="text-left">
+                                <span t-esc="l.get('name')"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="l.get('sum')"/>
+                            </td>
+                            <t t-set="total" t-value="total + l.get('sum')"/>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            -----------------------
+                        </tr>
+                        <tr>
+                            <td style="width:50%;" class="text-left">
+                                Total
+                            </td>
+                            <td style="width:50%; !important" class="text-right">
+                                <span t-field="o.currency_id.symbol"/><span t-esc="total"/>
+                            </td>
+                        </tr>
+                    </table>                 
+                        
+                    </div>
+                    
+                    	
+            </t>
+        </template>
+
+        <template id="front_sales_report_pdf_template">
+		    <t t-call="web.html_container">
+		        <t t-foreach="docs" t-as="o">
+		            <t t-call="pos_z_report.front_sales_report_pdf_document" />
+		        </t>
+		    </t>
+		</template>
+
+</odoo>

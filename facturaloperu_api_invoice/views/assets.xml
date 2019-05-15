@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="assets_backend" name="facturaloperu_api_invoice_assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+      <link rel="stylesheet" href="/facturaloperu_api_invoice/static/src/css/api_frame.css"/>
+    </xpath>
+  </template>
+</odoo>

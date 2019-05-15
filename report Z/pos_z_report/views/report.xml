@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<report
+            id="z_report_pos_sales_pdf"
+            string="X Report(pdf)"
+            model="pos.session"
+            report_type="qweb-pdf"
+            file="pos_z_report.front_sales_report_pdf_template"
+            name="pos_z_report.front_sales_report_pdf_template"
+            menu="True"
+        />
+    	
+
+        <record id="paperformat_z_report" model="report.paperformat">
+            <field name="name">Z Report</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(6, 0, [ref('pos_z_report.z_report_pos_sales_pdf'),
+                                                    ])]"/>
+        </record>
+            </data>
+    </odoo>
+	

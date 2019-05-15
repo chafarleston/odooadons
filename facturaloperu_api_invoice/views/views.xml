@@ -1,0 +1,142 @@
+<odoo>
+  <data>
+
+    <!-- FACTURAS ACCOUNT.INVOICE -->
+
+    <!-- heredando vista form -->
+    <record id="account.invoice_form_inherited" model="ir.ui.view"> <!-- inherited para heredar -->
+      <field name="model">account.invoice</field> <!-- modelo a extender -->
+      <field name="inherit_id" ref="account.invoice_form"/> <!-- vista del modelo a extender -->
+      <field name="arch" type="xml">
+        <xpath expr="/form/*" position="after">
+          <header>
+            <button name="action_invoice_send_sunat" type="object" string="Enviar" class="oe_highlight" groups="account.group_account_invoice" attrs="{'invisible': ['|',('state','in','draft'), ('state_api', 'in', ['send','null','success'])]}"/>
+            <button name="action_invoice_json_generate" type="object" string="Json generado" groups="account.group_account_invoice" attrs="{'invisible': ['|',('state','in','draft'), ('state_api', 'in', ['send'])]}"/>
+
+            <button name="action_invoice_query_sunat" type="object" string="Consultar" groups="account.group_account_invoice" attrs="{'invisible': [('state_api', 'not in', 'null')]}"/>
+            <field name="state_api" widget="statusbar" statusbar_visible="register,success"/>
+          </header>
+        </xpath>
+        <field name='team_id' position="after">
+            <field name="serie_id" position="attributes"/>
+        </field>
+        <xpath expr="//page[1]" position="after">
+          <page string="API">
+            <group>
+              <group>
+                <field name="number_feapi"/>
+              </group>
+              <group>
+                <field name="link_cdr" widget="url"/>
+                <field name="link_pdf" widget="url"/>
+                <field name="link_xml" widget="url"/>
+              </group>
+            </group>
+          </page>
+        </xpath>
+        <xpath expr="//page[2]" position="after">
+          <page string="API JSON">
+            <group>
+              <field name="api_json" widget="ace"/>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- heredando vista tree -->
+    <record id="account.invoice_tree_inherit" model="ir.ui.view">
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_tree"/>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <xpath expr="/tree/field[@name='number']" position="after">
+          <field name="number_feapi" string="Serie - Correlativo" />
+        </xpath>
+        <xpath expr="/tree/field[@name='state']" position="after">
+          <field name="state_api" string="Estado Sunat" />
+        </xpath>
+      </field>
+    </record>
+
+    <!-- heredando vista configuración -->
+    <!--<record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+      <field name="model">res.config.settings</field>
+      <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//div[hasclass('settings')]" position="inside">
+          <div class="app_settings_block" data-string="API" string="API" data-key="facturaloperu_api_invoice" groups="account.group_account_manager">
+            <h2>API</h2>
+            <div class="row mt16 o_settings_container">
+              <div class="col-12 col-lg-12 o_setting_box">
+                <div class="o_setting_left_pane"/>
+                  <div class="o_setting_right_pane">
+                    <span class="o_form_label">API TOKEN</span>
+                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                    <div class="text-muted">
+                      Example: Bearer jQIpV5ilgizr4NH2AxwO9FytfiLia6jcvJGM2u0gl9h44VBa0L
+                    </div>
+                    <div class="content-group">
+                      <div class="row mt16">
+                        <label for="api_token" class="col-lg-3 o_light_label"/>
+                        <field name="api_token" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-12 o_setting_box">
+                <div class="o_setting_left_pane"/>
+                  <div class="o_setting_right_pane">
+                    <span class="o_form_label">API URL</span>
+                    <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                    <div class="text-muted">
+                      Example: https://sub.domain.com/api/documents
+                    </div>
+                    <div class="content-group">
+                      <div class="row mt16">
+                        <label for="api_url" class="col-lg-3 o_light_label"/>
+                        <field name="api_url" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </xpath>
+      </field>
+    </record>-->
+
+    <record id="view_api_comprobantes_form" model="ir.ui.view">
+      <field name="name">feapi.comprobante</field>
+      <field name="model">feapi.comprobante</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Comprobantes" edit="false" create="false">
+          <div id="api_frame" style="position:absolute; left:0; top:0; width:100%; height:100%;">
+            <field
+              name="api_frame"
+              nolabel="1"
+              readonly="1"
+              style="position:absolute; left:0; top:0; width:100%; height:100%;"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="api_action_invoice_comprobantes" model="ir.actions.act_window">
+      <field name="name">Comprobantes</field>
+      <field name="res_model">feapi.comprobante</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form, tree</field>
+      <field name="target">inline</field>
+      <field name="view_id" ref="view_api_comprobantes_form" />
+    </record>
+
+    <!-- Comprobantes menu -->
+    <menuitem id="invoice_comprobante_menu"
+        name="Comprobantes"
+        action="api_action_invoice_comprobantes"
+        parent="account.menu_finance_configuration"/>
+
+  </data>
+</odoo>

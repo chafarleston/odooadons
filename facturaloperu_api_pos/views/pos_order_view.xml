@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="facturaloperu_api_pos" model="ir.ui.view">
+      <field name="name">pos.order.form.view.inherit</field>
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[1]" position="after">
+          <page string="API">
+            <group>
+              <group>
+                <field name="api_number_feapi"/>
+                <field name="api_external_id" />
+              </group>
+              <group>
+                <field name="api_link_cdr" widget="url"/>
+                <field name="api_link_pdf" widget="url"/>
+                <field name="api_link_xml" widget="url"/>
+              </group>
+            </group>
+          </page>
+        </xpath>
+        <xpath expr="//page[2]" position="after">
+          <page string="API JSON">
+            <group>
+              <field name="api_code_json" widget="ace"/>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- heredando vista tree -->
+    <record model="ir.ui.view" id="misc_view_pos_pos_tree">
+      <field name="name">misc.pos.order.tree</field>
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/> <!-- agregar [modulo].[id] -->
+      <field name="arch" type="xml">
+        <xpath expr="/tree/field[@name='pos_reference']" position="after">
+          <field name="api_number_feapi" string="Serie - Correlativo" />
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_api_comprobantes_form" model="ir.ui.view">
+      <field name="name">feapi</field>
+      <field name="model">feapi</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Comprobantes" edit="false" create="false">
+          <div id="api_frame" style="position:absolute; left:0; top:0; width:100%; height:100%;">
+            <field
+              name="api_frame"
+              nolabel="1"
+              readonly="1"
+              style="position:absolute; left:0; top:0; width:100%; height:100%;"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="api_action_pos_comprobantes" model="ir.actions.act_window">
+      <field name="name">Comprobantes</field>
+      <field name="res_model">feapi</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form, tree</field>
+      <field name="target">inline</field>
+      <field name="view_id" ref="view_api_comprobantes_form" />
+    </record>
+
+    <!-- Comprobantes menu -->
+    <menuitem id="pos_comprobante_menu"
+        name="Comprobantes"
+        action="api_action_pos_comprobantes"
+        parent="point_of_sale.menu_point_root"/>
+  </data>
+</odoo>

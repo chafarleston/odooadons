@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_pos_order_sync_form" model="ir.ui.view">
+    <field name="name">pos_order_sync_form</field>
+    <field name="model">pos.order.sync</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button
+            name="sync_pos_orders"
+            attrs="{'invisible': ['|', ('id', '=', False), ('state', '=', 'synced')]}"
+            string="Sincronizar pedido"
+            type="object"
+            class="oe_highlight"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet string="Pedidos no sincronizados">
+          <group>
+            <group col="2">
+              <field style="width:60%;" name="pos_reference"/>
+              <field style="width:60%;" name="session_id"/>
+              <field style="width:60%;" name="api_number_feapi"/>
+              <field style="width:60%;" name="api_external_id"/>
+            </group>
+            <group col="2">
+              <field style="width:60%;" name="api_link_pdf"/>
+              <field style="width:60%;" name="api_link_cdr"/>
+              <field style="width:60%;" name="api_link_xml"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_pos_order_sync_tree" model="ir.ui.view">
+    <field name="name">pos_order_sync_tree</field>
+    <field name="model">pos.order.sync</field>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="pos_reference"/>
+        <field name="session_id"/>
+        <field name="api_external_id"/>
+        <field name="api_number_feapi"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_view_pos_order_sync" model="ir.actions.act_window">
+    <field name="name">POS: Pedidos no sincronizados</field>
+    <field name="res_model">pos.order.sync</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_pos_order_sync_tree" />
+  </record>
+
+    <record id="action_sync_pos_orders" model="ir.actions.server">
+      <field name="name">Sincronizar pedidos</field>
+      <field name="model_id" ref="facturaloperu_api_pos.model_pos_order_sync"/>
+      <field name="binding_model_id" ref="facturaloperu_api_pos.model_pos_order_sync"/>
+      <field name="state">code</field>
+      <field name="code">
+if records:
+    records.sync_pos_orders()
+  </field>
+</record>
+
+    <menuitem id="pos_order_sync_menu"
+      name="Pedidos no sincronizados"
+      action="action_view_pos_order_sync"
+      parent="point_of_sale.menu_point_of_sale"/>
+</odoo>

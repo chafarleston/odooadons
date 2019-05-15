@@ -1,0 +1,14 @@
+<odoo>
+
+    <data>
+   <record id="email_template_edi_session" model="mail.template">
+            <field name="name">Z-report - Send by Email</field>
+            <field name="subject">Z-report</field>
+            <field name="email_recipients"></field>
+            <field name="model_id" ref="pos_z_report.model_pos_session"/>
+            <field name="report_template" ref="pos_z_report.z_report_pos_sales_pdf"/>
+            <field name="lang"></field>
+            <field name="body_html"></field>
+        </record>
+    </data>
+</odoo>

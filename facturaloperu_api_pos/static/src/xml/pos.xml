@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+  <t t-extend='PaymentScreenWidget'>
+    <t t-jquery='.js_set_customer' t-operation='after'>
+      <t t-if="widget.pos.config.facturalo_endpoint_state == 'success' and widget.pos.config.iface_factura_serial_number">
+        <t t-if="widget.pos.config.iface_boleta_serial_number">
+          <div t-attf-class='button js_boleta'>
+            <i class='fa fa-ticket' /> <span id="boleta_text">Boleta <t t-esc="widget.pos.config.iface_boleta_serial_number[1]"/></span>
+          </div>
+        </t>
+        <t t-if="widget.pos.config.iface_factura_serial_number">
+          <div t-attf-class='button js_factura'>
+            <i class='fa fa-file-text-o' /> <span id="factura_text">Factura <t t-esc="widget.pos.config.iface_factura_serial_number[1]"/></span>
+          </div>
+        </t>
+        <!-- <t t-if="widget.pos.config.iface_nota_credito_serial_number">
+          <div t-attf-class='button js_nota_credito'>
+            <i class='fa fa-file-text-o' /> <span id="factura_text">Nota de crédito <t t-esc="widget.pos.config.iface_nota_credito_serial_number[1]"/></span>
+          </div>
+        </t>
+        <t t-if="widget.pos.config.iface_nota_debito_serial_number">
+          <div t-attf-class='button js_nota_debito'>
+            <i class='fa fa-file-text-o' /> <span id="factura_text">Nota de débito <t t-esc="widget.pos.config.iface_nota_debito_serial_number[1]"/></span>
+          </div>
+        </t> -->
+        <t t-if="widget.pos.config.iface_venta_interna">
+          <div t-attf-class='button js_venta_interna'>
+            <i class='fa fa-file-text-o' /> <span id="factura_text">Venta interna</span>
+          </div>
+        </t>
+      </t>
+      <div></div>
+    </t>
+  </t>
+
+  <t t-extend='ClientDetails'>
+    <t t-jquery='.client-details-left' t-operation='append'>
+      <div class='client-detail'>
+        <span class='label'>Tipo de Documento</span>
+        <t t-if='partner.catalog_06_id[0]'>
+          <span class='detail client-document-types'>
+            <t t-if='partner.catalog_06_id[0] == 1'>DOC.TRIB.NO.DOM.SIN.RUC</t>
+            <t t-if='partner.catalog_06_id[0] == 2'>DNI</t>
+            <t t-if='partner.catalog_06_id[0] == 3'>Carnet de extrangería</t>
+            <t t-if='partner.catalog_06_id[0] == 4'>RUC</t>
+            <t t-if='partner.catalog_06_id[0] == 5'>Pasaporte</t>
+            <t t-if='partner.catalog_06_id[0] == 6'>Cédula Diplomática de Identidad</t>
+            <t t-if='partner.catalog_06_id[0] == 7'>Varios</t>
+          </span>
+        </t>
+      </div>
+      <!-- <div class='client-detail'>
+        <span class='label'>Número de Documento</span>
+        <span class='detail client-document-number'><t t-esc='partner.doc_number' /></span>
+      </div> -->
+    </t>
+    <t t-jquery='.client-details-right' t-operation='replace'>
+      <div class='client-detail'>
+        <span class='label'>Código de barras</span>
+        <t t-if='partner.barcode'>
+          <span class='detail client-id'><t t-esc='partner.barcode'/></span>
+        </t>
+        <t t-if='!partner.barcode'>
+          <span class='detail client-id empty'>N/A</span>
+        </t>
+      </div>
+      <div class='client-detail'>
+        <span class='label'>Número de documento</span>
+        <t t-if='partner.vat'>
+          <span class='detail vat'><t t-esc='partner.vat'/></span>
+        </t>
+        <t t-if='!partner.vat'>
+          <span class='detail vat empty'>N/A</span>
+        </t>
+      </div>
+      <div t-attf-class='client-detail #{widget.pos.pricelists.length &lt;= 1 ? "oe_hidden" : ""}'>
+        <span class='label'>Pricelist</span>
+        <t t-if='partner.property_product_pricelist'>
+          <span class='detail property_product_pricelist'><t t-esc='partner.property_product_pricelist[1]'/></span>
+        </t>
+        <t t-if='!partner.property_product_pricelist'>
+          <span class='detail property_product_pricelist empty'>N/A</span>
+        </t>
+      </div>
+    </t>
+  </t>
+
+  <t t-extend='ClientDetailsEdit'>
+    <t t-jquery='.client-details-left' t-operation='append'>
+      <div class='client-detail'>
+        <span class='label'>Tipo de Documento</span>
+        <select class='detail client-document-types needsclick' name='catalog_06_id'>
+          <option value=''>None</option>
+          <t t-foreach='widget.pos.doc_types' t-as='doc_type'>
+            <option t-att-value='doc_type.id' t-att-selected="partner.catalog_06_id ? ((doc_type.id === partner.catalog_06_id[0]) ? true : undefined) : undefined">
+              <t t-esc='doc_type.name'/>
+            </option>
+          </t>
+        </select>
+      </div>
+      <!-- <div class='client-detail'>
+        <span class='label'>Número de Documento</span>
+        <input class='detail client-document-number' name='doc_number' t-att-value='partner.doc_number || ""' placeholder='Document Number'></input>
+      </div> -->
+    </t>
+    <t t-jquery='.client-details-right' t-operation='replace'>
+      <div class='client-details-right'>
+        <div class='client-detail'>
+            <span class='label'>Correo electrónico</span>
+            <input class='detail client-email'  name='email'    type='email'    t-att-value='partner.email || ""'></input>
+        </div>
+        <div class='client-detail'>
+            <span class='label'>Teléfono</span>
+            <input class='detail client-phone'  name='phone'    type='tel'      t-att-value='partner.phone || ""'></input>
+        </div>
+        <div class='client-detail'>
+            <span class='label'>Código de barras</span>
+            <input class='detail barcode'       name='barcode'    t-att-value='partner.barcode || ""'></input>
+        </div>
+        <div class='client-detail'>
+            <span class='label'>Número de documento</span>
+            <input class='detail vat'           name='vat'     t-att-value='partner.vat || ""'></input>
+        </div>
+        <div t-attf-class='client-detail #{widget.pos.pricelists.length &lt;= 1 ? "oe_hidden" : ""}'>
+            <span class='label'>Pricelist</span>
+            <select class='detail needsclick' name='property_product_pricelist'>
+                <t t-foreach='widget.pos.pricelists' t-as='pricelist'>
+                    <option t-att-value='pricelist.id'
+                                        t-att-selected="partner.property_product_pricelist ? (pricelist.id === partner.property_product_pricelist[0] ? true : undefined) : undefined">
+                        <t t-esc='pricelist.display_name'/>
+                    </option>
+                </t>
+            </select>
+        </div>
+      </div>
+    </t>
+  </t>
+
+  <t t-extend="PosTicket">
+    <t t-jquery=".pos-sale-ticket" t-operation="prepend">
+      <table>
+        <tr>
+          <!-- logo -->
+          <td style='text-align:center' id='logo'></td>
+        </tr>
+      </table>
+    </t>
+    <t t-jquery=".receipt-phone" t-operation="before">
+      <t t-if="order.pos.company.vat != false">
+        <div id="receipt-ruc">RUC: <t t-esc="order.pos.company.vat"></t><br /></div>
+      </t>
+
+      <div id="receipt-ruc" style="font-size:11px;">Dirección:
+        <t t-if="order.pos.company.street"><t t-esc="widget.pos.company.street"></t></t>
+        <t t-if="order.pos.company.city"><t t-esc="widget.pos.company.city"></t>, </t>
+        <t t-if="order.pos.company.state_id != false"><t t-esc="widget.pos.company.state_id[1]"></t> - </t>
+        <t t-esc="widget.pos.company.country.name"></t>
+      </div>
+    </t>
+    <t t-jquery=".receipt-phone" t-operation="replace">
+      <t t-if="order.pos.company.phone">
+        <div id="receipt-ruc" style="font-size:11px;">Teléfono: <t t-esc="order.pos.company.vat"></t><br /></div>
+      </t>
+    </t>
+    <t t-jquery=".receipt-user" t-operation="after">
+      <!-- cliente -->
+      <t t-if='order.attributes.client'>
+        <div id="client" style="font-size:11px;">Cliente<br /></div>
+        <div style="font-size:11px;">Nombre: <t t-esc="order.attributes.client.name" style="font-size:11px;"></t></div>
+        <div style="font-size:11px;"><t t-esc="order.attributes.client.catalog_06_id[1]"></t>: <t t-esc="order.attributes.client.vat"></t></div>
+      </t>
+      <!-- tipo de documento -->
+      <div style='text-align:center;font-size:14px;margin-top:10px;display:block;font-weight:bold;' id="receipt-type"></div>
+      <!-- numero-serie -->
+      <div style='text-align:center;' id="receipt-serie-number"></div>
+    </t>
+    <t t-jquery=".receipt-user" t-operation="replace">
+      <div style="font-size:11px;">User: <t t-esc="widget.pos.get_cashier().name"/></div>
+    </t>
+    <t t-jquery=".receipt-orderlines" t-operation="replace">
+      <table >
+          <colgroup>
+              <col width='15%' />
+              <col width='40%' />
+              <col width='20%' />
+              <col width='25%' />
+          </colgroup>
+          <tr>
+            <th>Cant.</th>
+            <th>Descripción</th>
+            <th>P.U.</th>
+            <th>Total</th>
+          </tr>
+          <tr t-foreach="orderlines" t-as="orderline">
+              <!-- cantidad -->
+              <td class="pos-left-align">
+                  <t t-esc="orderline.get_quantity_str_with_unit()"/>
+              </td>
+              <!-- con descuento -->
+              <td>
+                  <t t-esc="orderline.get_product().display_name"/>
+                    <t t-if="orderline.get_discount() > 0">
+                      <div class="pos-disc-font">
+                        With a <t t-esc="orderline.get_discount()"/>% discount
+                      </div>
+                  </t>
+              </td>
+              <td class="pos-right-align">
+                  <t t-esc="widget.format_currency(orderline.get_unit_display_price())"/>
+              </td>
+              <td class="pos-right-align">
+                  <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+              </td>
+          </tr>
+      </table>
+    </t>
+    <t t-jquery=".pos-sale-ticket" t-operation="append">
+      <!-- cantidad en texto -->
+      <div style='padding-bottom:10px'>
+        Son: <div style="display:inline-block;" id="number-to-letter"></div>
+      </div>
+      <t t-jquery=".receipt-change" t-operation="inner">
+        <table>
+          <tr>
+            <td style='text-align:center; font-size:10px;' id='search'></td>
+          </tr>
+          <tr>
+            <td style='text-align:center' id='qr'></td>
+          </tr>
+          <tr>
+            <td style='text-align:center; font-size:10px;' id='hash'></td>
+          </tr>
+        </table>
+      </t>
+    </t>
+  </t>
+
+</templates>

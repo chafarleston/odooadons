@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <template id="assets_backend" name="feapi assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/facturaloperu_api_invoice/static/src/js/main.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

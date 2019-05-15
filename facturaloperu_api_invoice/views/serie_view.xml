@@ -1,0 +1,43 @@
+<odoo>
+  <data>
+
+    <record id="feapi_serie_form_view" model="ir.ui.view">
+      <field name="name">feapi.serie.form.view</field>
+      <field name="model">feapi.serie</field>
+      <field name="arch" type="xml">
+        <form string="Form Series">
+          <sheet>
+            <group>
+              <field name="document_type_id"/>
+              <field name="name" placeholder="F001" help="Debe usar el formato solicitado por la Sunat"/>
+              <field name="description"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="feapi_serie_tree_view" model="ir.ui.view">
+      <field name="name">feapi.serie.form.view</field>
+      <field name="model">feapi.serie</field>
+      <field name="arch" type="xml">
+        <tree string="Tree Series">
+          <field name="document_type_id"/>
+          <field name="name"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_serie" model="ir.actions.act_window">
+      <field name="name">Gestión de Series</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">feapi.serie</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Facturalo Peru API" id="serie_menu" parent="account.menu_finance_configuration" sequence="20"/>
+    <menuitem name="Gestión de series" id="gestion_serie_menu" parent="serie_menu" action="action_serie" sequence="1"/>
+
+  </data>
+</odoo>

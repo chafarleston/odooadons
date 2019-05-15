@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pos_order_document_type_manager,pos.order.document.type.manager,model_pos_order_document_type,base.group_erp_manager,1,1,1,1
+access_pos_order_serial_number_manager,pos.order.serial.number.manager,model_pos_order_serial_number,base.group_erp_manager,1,1,1,1
+access_pos_order_sync_manager,pos.order.sync.manager,model_pos_order_sync,base.group_erp_manager,1,1,1,1

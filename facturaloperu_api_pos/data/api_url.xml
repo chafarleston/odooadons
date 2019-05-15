@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+  <function model="ir.config_parameter" name="set_param" eval="('facturaloperu_api_pos.api_url', 'http://qwe.multifacturalo.oo:8084/documents')"/>
+</odoo>

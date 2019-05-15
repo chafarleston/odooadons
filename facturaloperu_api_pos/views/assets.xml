@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="assets_backend" name="facturaloperu_api_pos_assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+      <link rel="stylesheet" href="/facturaloperu_api_pos/static/src/css/api_frame.css"/>
+      <script type="text/javascript" src="/facturaloperu_api_pos/static/src/js/screen.js"></script>
+    </xpath>
+  </template>
+
+  <template id="pos_facturalo_assets" inherit_id="point_of_sale.assets">
+    <xpath expr="." position="inside">
+      <script type="text/javascript" src="/facturaloperu_api_pos/static/src/libs/noty/noty.min.js"></script>
+    </xpath>
+    <xpath expr="//link[@id='pos-stylesheet']" position="after">
+      <link rel="stylesheet" type="text/css" href="/facturaloperu_api_pos/static/src/libs/noty/noty.css"/>
+      <link rel="stylesheet" type="text/css" href="/facturaloperu_api_pos/static/src/libs/noty/themes/bootstrap-v4.css"/>
+    </xpath>
+  </template>
+</odoo>

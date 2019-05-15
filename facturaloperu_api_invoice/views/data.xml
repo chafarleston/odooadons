@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="feapi_serie_factura_uno" model="feapi.serie">
+            <field name="name">F001</field>
+            <field name="description">Factura Serie 1</field>
+            <field name="document_type_id" ref="odoope_einvoice_base.e01_01"/>
+        </record>
+        <record id="feapi_serie_boleta_uno" model="feapi.serie">
+            <field name="name">B001</field>
+            <field name="description">Boleta Serie 1</field>
+            <field name="document_type_id" ref="odoope_einvoice_base.e01_03"/>
+        </record>
+    </data>
+</odoo>
